@@ -1,0 +1,12 @@
+{
+  "name": "problem-solving",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "create": "cd ./c && touch %npm_config_name%.c && cd ../ && cd ./c++ && touch %npm_config_name%.cpp && cd ../ && cd ./java && touch %npm_config_name%.java && cd ../ && cd ./python && touch %npm_config_name%.py && cd ../"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
