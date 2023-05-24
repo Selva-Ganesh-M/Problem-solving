@@ -1,3 +1,4 @@
+
 def RemoveDuplicates(arr: [int]):
   i=0
   while (i<len(arr)-2):
@@ -5,43 +6,38 @@ def RemoveDuplicates(arr: [int]):
       arr.pop(i+1)
     i+=1
 
-def QuickSort(arr, start, end):
-
-  # if array has single to no items
+def QS(arr, start, end):
   if not (start<end):
     return
-
-  pivot = start
+  pivot = start;
   i=start
-  j=end
-
-  while (i<j):
-    while (arr[i]<=arr[pivot]):
+  j = end
+  while(i<=j):
+    while not (arr[i]>arr[pivot]):
       i+=1
-      if i>=j:
+      if not (i<j):
         break
-    while (arr[j]>arr[pivot]):
+    while not (arr[j]<=arr[pivot]):
       j-=1
     if (i<j):
       arr[i], arr[j] = arr[j], arr[i]
       i+=1
       j-=1
-  else:
+  else: 
     arr[j], arr[pivot] = arr[pivot], arr[j]
     pivot = j
-
-  QuickSort(arr, start, pivot-1)
-  QuickSort(arr, pivot+1, end)
-
-      
+  QS(arr, start, pivot-1)
+  QS(arr, pivot+1, end)
 
 
 
 def findMissingPositiveNumber(arr):
   if(arr==[]):
     return 1
-  QuickSort(arr, 0, len(arr)-1)
+  QS(arr, 0, len(arr)-1)
+  print("sorted", arr)
   RemoveDuplicates(arr)
+  print("cleaned", arr)
   i=0
   First = True
   while(i<len(arr)-1):
@@ -64,3 +60,4 @@ def findMissingPositiveNumber(arr):
 
 n=input()
 print(findMissingPositiveNumber([int(x) for x in input().split()]))
+

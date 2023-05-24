@@ -5,7 +5,7 @@ def QS(arr, start, end):
   pivot = start;
   i=start
   j = end
-  while(i<j):
+  while(i<=j):
     while not (arr[i]>arr[pivot]):
       i+=1
       if not (i<j):
@@ -22,10 +22,8 @@ def QS(arr, start, end):
   QS(arr, start, pivot-1)
   QS(arr, pivot+1, end)
 
-arr=[7, 6, 10, 5, 9, 2, 1, 15, 7]
+arr=[1,3,4,5,2]
+# arr=[7, 6, 10, 5, 9, 2, 1, 15, 7]
 # arr=[8, 1, 2,3, 65, 4, 34, 7, 9]
 print(QS(arr, 0, len(arr)-1))
 print(arr)
-    
-
-
