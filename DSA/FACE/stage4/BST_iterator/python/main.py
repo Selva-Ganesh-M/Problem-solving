@@ -1,88 +1,107 @@
 class Node:
   def __init__(self, data):
     self.data = data;
-    self.parent = None;
     self.left = None;
     self.right = None;
-
-class BSTIterator:
+    
+class BST:
   def __init__(self):
     self.root = None;
-    self.iter = None;
-    self.inOrderList = [];
-
-  def fill(self, data, node=None):
+    self.stack = None;
+    self.stackTouched = False;
+    
+  def __push(self, node):
+    if not self.stack:
+      self.stack = [node]
+    else:
+      self.stack.append(node)
+  
+  def __pop(self):
+    if not self.stack: return None;
+    return self.stack.pop();
+  
+  def __peek(self):
+    if not self.stack: return None;
+    return self.stack[-1];
+  
+  def fill(self, value, node=None):
     if not node:
       if not self.root: 
-        self.root = Node(data);
+        self.root = Node(value);
         return;
       node = self.root;
-    if data < node.data:
-      if node.left:
-        self.fill(data, node.left);
+    if value < node.data:
+      if not node.left:
+        node.left = Node(value);
       else:
-        node.left = Node(data);
-        node.left.parent = node;
+        self.fill(value, node.left);
     else:
-      if node.right:
-        self.fill(data, node.right);
+      if not node.right:
+        node.right = Node(value);
       else:
-        node.right = Node(data);
-        node.right.parent = node;
-
-  def __fixIter(self, value=-2147483647, node=None):
-    if not node:
-      if not self.root: return None;
-      return self.__fixIter(value, self.root);
-    if not node.left:
-      node.left = Node(value);
-      node.left.parent = node
-      self.iter = node.left;
-      return;
-    self.__fixIter(value, node.left);
-
-  def __hasNext(self):
-    if self.iter in self.inOrderList:
-      pos = self.inOrderList.index(self.iter)
-      return True if pos != len(self.inOrderList)-1 else False
-
-  def inOrder(self, node=None):
-    if not node:
-      if self.root: return self.inOrder(self.root);
-      return;
-    if node.left: self.inOrder(node.left)
-    self.inOrderList.append(node)
-    if node.right: self.inOrder(node.right)
-      
-  def __next(self):
-    if self.iter in self.inOrderList:
-      pos = self.inOrderList.index(self.iter)
-      if pos != len(self.inOrderList)-1:
-        self.iter = self.inOrderList[pos+1];
-        return self.iter.data;
-      return "no next item"
-    
+        self.fill(value, node.right);
         
+  def inOrder(self, node=None):
+    ans = []
+    if not node:
+      if not self.root: return ans;
+      node = self.root;
+    def __i_inOrder(node):
+      if node.left: __i_inOrder(node.left);
+      ans.append(node.data);
+      if node.right: __i_inOrder(node.right);
+    __i_inOrder(node);
+    return ans;
+  
+  def __createStack(self):
+    if self.stackTouched: return;
+    if not self.root: return;
+    node = self.root;
+    while(node):
+      self.__push(node);
+      node = node.left;
+    self.stackTouched = True
+    
+  
+  def __pullRightZag(self, node):
+    if node.right:
+      node = node.right;
+      while (node):
+        self.__push(node);
+        node = node.left;
+  
+  def __hasNext(self):
+    if not self.stack:
+      self.__createStack();
+    return True if self.__peek() else False;
+  
+  def __next(self):
+    if not self.stack:
+      self.__createStack();
+    nextItem = self.__pop();
+    self.__pullRightZag(nextItem);
+    return nextItem.data;
+    
+  def handleCommands(self, commands):
+    ans = [];
+    for command in commands:
+      if command == "next":
+        ans.append(self.__next());
+      elif command == "hasNext":
+        ans.append(self.__hasNext());
+    return ans;
+    
+n = input()
+data = [int(x) for x in input().split()]
+commands = [x for x in input().split()]
+bst = BST();
+for x in data: bst.fill(x);
+ans = bst.handleCommands(commands)
+print(*ans)
+# inOrder = bst.inOrder();
+# print(*inOrder)
 
-  def handleIterQueries(self, queries):
-    if not self.root: return []
-    self.__fixIter();
-    self.inOrder();
-    ansArr=[]
-    for query in queries:
-        if query == "next":
-          ansArr.append(self.__next());
-        elif query == "hasNext":
-          ansArr.append(self.__hasNext());
-        else :
-          print("invalid choice");
-    return ansArr
 
-tree = BSTIterator();
-# n=input()
-# arr=[int(x) for x in input().split()]
-arr=[7, 3, 15, 9, 20];
-for x in arr: tree.fill(x);
-# queries=[x for x in input().split()]
-queries = ["next", "next", "hasNext", "next", "next", "next", "hasNext"]
-print(*tree.handleIterQueries(queries))
+# 5
+# 7 3 15 9 20
+# next next hasNext next next next hasNext
