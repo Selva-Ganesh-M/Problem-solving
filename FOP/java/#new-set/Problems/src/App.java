@@ -7,7 +7,8 @@ public class App {
         // Print_X_Pattern.method("PROGRAM");
         // Weight_Calc.method(new int[]{10, 36, 54, 89, 12});
         // Find_Too.method("WELCOMETOZOHOCORPORATION");
-        Palindrome.method("awswa");
+        // Palindrome.method("awswa");
+        Armstrong.method(370);
 
         
     }
