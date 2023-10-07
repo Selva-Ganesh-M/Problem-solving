@@ -8,7 +8,8 @@ public class App {
         // Weight_Calc.method(new int[]{10, 36, 54, 89, 12});
         // Find_Too.method("WELCOMETOZOHOCORPORATION");
         // Palindrome.method("awswa");
-        Armstrong.method(370);
+        // Armstrong.method(370);
+        Anagram.mtd1("selva");
 
         
     }
