@@ -34,8 +34,8 @@ public class Anagram {
     // presence array
     public static void mtd1(String str){
         int [] arr = new int[26];
-        int res = Anagram.gen("$GDaasdalsab1 9798", arr);
-        System.out.println(res);
+        int res = Anagram.gen(str, arr);
+        System.out.println(res == 26);
         
         // for
     }
